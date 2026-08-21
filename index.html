@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sabor & Panela — Comunidade de Receitas</title>
+<meta name="description" content="Receitas, favoritos, avaliações, perfil, criação de receitas e painel administrativo.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="brand">🍳</div>
+    <h1>Sabor & Panela</h1>
+    <p>Uma comunidade para descobrir, preparar e compartilhar receitas.</p>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-auth="login">Entrar</button>
+      <button class="auth-tab" data-auth="register">Criar conta</button>
+    </div>
+    <form id="loginForm" class="auth-form">
+      <label>E-mail<input id="loginEmail" type="email" required placeholder="voce@email.com"></label>
+      <label>Senha<input id="loginPassword" type="password" required placeholder="Sua senha"></label>
+      <button class="btn primary" type="submit">Entrar</button>
+      <p id="loginMsg" class="msg"></p>
+    </form>
+    <form id="registerForm" class="auth-form hidden">
+      <label>Nome<input id="regName" required minlength="2" placeholder="Seu nome"></label>
+      <label>E-mail<input id="regEmail" type="email" required placeholder="voce@email.com"></label>
+      <label>Senha<input id="regPass" type="password" required minlength="6" placeholder="Mínimo de 6 caracteres"></label>
+      <label>Confirmar senha<input id="regConfirm" type="password" required minlength="6"></label>
+      <button class="btn primary" type="submit">Criar minha conta</button>
+      <p id="regMsg" class="msg"></p>
+    </form>
+    <small>Projeto demonstrativo local. Para produção, use autenticação e banco de dados no servidor.</small>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+<header class="topbar">
+  <div class="container nav">
+    <a class="logo" href="#home">🍳 <span>Sabor & Panela</span></a>
+    <button id="menuBtn" class="icon-btn menu">☰</button>
+    <nav id="nav">
+      <a href="#home">Início</a><a href="#recipes">Receitas</a><a href="#community">Comunidade</a>
+      <a href="#favorites">Favoritos</a><a href="#about">Sobre</a>
+    </nav>
+    <div class="account">
+      <button id="themeBtn" class="icon-btn" title="Alternar tema">🌙</button>
+      <div class="settings-wrap">
+        <button id="settingsBtn" class="icon-btn" title="Configurações">⋮</button>
+        <div id="settingsMenu" class="settings-menu hidden">
+          <button id="settingsTheme">🌙 Alternar tema</button>
+          <button id="settingsProfile">👤 Meu perfil</button>
+          <button id="settingsTop">⬆ Voltar ao topo</button>
+          <button id="settingsLogout">🚪 Sair</button>
+        </div>
+      </div>
+      <button id="profileBtn" class="profile-chip"><span id="avatarMini">U</span><span id="userName"></span></button>
+      <button id="logoutBtn" class="logout">Sair</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="home" class="hero">
+  <div class="container hero-grid">
+    <div class="reveal">
+      <span class="eyebrow">🍴 COZINHE SEM COMPLICAÇÃO</span>
+      <h2>Descubra seu próximo prato favorito.</h2>
+      <p>Receitas testadas, avaliações da comunidade, favoritos e espaço para você publicar suas próprias ideias.</p>
+      <div class="hero-actions"><a class="btn primary" href="#recipes">Explorar receitas</a><button id="heroCreate" class="btn ghost">Publicar receita</button></div>
+      <div class="hero-stats"><div><b id="statRecipes">0</b><span>receitas</span></div><div><b id="statUsers">0</b><span>cozinheiros</span></div><div><b>5★</b><span>avaliações</span></div></div>
+    </div>
+    <div class="hero-art reveal"><div class="hero-plate">🍝</div><div class="floating f1">⭐ <b>4,9</b><small>média da comunidade</small></div><div class="floating f2">🔥 <b>Popular</b><small>receitas em alta</small></div></div>
+  </div>
+</section>
+
+<section id="recipes" class="section">
+<div class="container">
+<div class="section-head"><div><span class="eyebrow">RECEITAS</span><h2>O que você quer cozinhar?</h2></div><button id="newRecipeBtn" class="btn primary">＋ Nova receita</button></div>
+<div class="search-row"><input id="search" class="search" placeholder="🔎 Buscar por nome, ingrediente ou categoria..."><div id="filters" class="filters"></div></div>
+<div id="recipeGrid" class="recipe-grid"></div><div id="empty" class="empty hidden">Nenhuma receita encontrada.</div>
+</div>
+</section>
+
+<section id="community" class="section soft">
+<div class="container">
+<div class="section-head"><div><span class="eyebrow">COMUNIDADE</span><h2>Receitas dos cozinheiros</h2></div><button id="sortBtn" class="btn ghost">⭐ Mais avaliadas</button></div>
+<div id="communityGrid" class="recipe-grid"></div>
+</div>
+</section>
+
+<section id="favorites" class="section">
+<div class="container"><div class="section-head"><div><span class="eyebrow">MEUS FAVORITOS</span><h2>Guardadas para depois</h2></div></div>
+<div id="favoriteGrid" class="recipe-grid"></div><div id="favoriteEmpty" class="empty">Você ainda não favoritou receitas.</div>
+</div>
+</section>
+
+<section id="about" class="section soft">
+<div class="container about-grid">
+<div><span class="eyebrow">SOBRE</span><h2>Um cantinho feito para quem ama comida.</h2><p>O Sabor & Panela junta receitas, comunidade e ferramentas simples para tornar o preparo mais divertido.</p></div>
+<div class="feature-grid"><div>❤️<b>Favoritos</b><small>Guarde o que gostou.</small></div><div>⭐<b>Avaliações</b><small>Ajude a comunidade.</small></div><div>📤<b>Compartilhe</b><small>Envie para amigos.</small></div><div>👨‍🍳<b>Publique</b><small>Crie suas receitas.</small></div></div>
+</div>
+</section>
+</main>
+<footer><div class="container footer"><strong>🍳 Sabor & Panela</strong><span>Feito para cozinhar, compartilhar e descobrir.</span><span>© 2026</span></div></footer>
+</div>
+
+<!-- Recipe modal -->
+<div id="recipeModal" class="modal hidden"><div class="backdrop" data-close></div><article class="modal-card large">
+<button class="close" data-close>×</button><div id="modalCover" class="modal-cover"></div>
+<div class="modal-title-row"><div><span id="modalCat" class="tag"></span><h2 id="modalTitle"></h2><p id="modalAuthor"></p></div><button id="modalFav" class="btn ghost"></button></div>
+<p id="modalDesc" class="muted"></p><div class="rating-summary"><span id="modalStars" class="stars"></span><b id="modalRating"></b><span id="modalCount"></span><span>•</span><span id="modalTime"></span></div>
+<div class="modal-actions"><button id="shareBtn" class="btn primary">📤 Compartilhar</button><button id="copyBtn" class="btn ghost">🔗 Copiar link</button></div>
+<div class="recipe-columns"><div><h3>🛒 Ingredientes</h3><ul id="ingredients"></ul></div><div><h3>👨‍🍳 Preparo</h3><ol id="steps"></ol></div></div>
+<hr><section><h3>⭐ Avaliações</h3><div class="review-compose"><div id="starPicker" class="star-picker"></div><textarea id="reviewText" placeholder="Escreva uma avaliação..."></textarea><button id="reviewBtn" class="btn primary">Publicar avaliação</button></div><div id="reviews"></div></section>
+</article></div>
+
+<!-- Create recipe -->
+<div id="createModal" class="modal hidden"><div class="backdrop" data-close></div><article class="modal-card">
+<button class="close" data-close>×</button><span class="eyebrow">NOVA RECEITA</span><h2>Publique seu prato</h2>
+<form id="recipeForm" class="form-grid">
+<label>Nome da receita<input id="rTitle" required placeholder="Ex.: Lasanha da família"></label>
+<label>Categoria<select id="rCategory"><option>Almoço</option><option>Jantar</option><option>Sobremesa</option><option>Lanche</option><option>Café da manhã</option></select></label>
+<label>Emoji da capa<input id="rEmoji" value="🍲" maxlength="4"></label>
+<label>Tempo<input id="rTime" required placeholder="40 min"></label>
+<label class="full">Descrição<textarea id="rDesc" required placeholder="Conte um pouco sobre a receita"></textarea></label>
+<label class="full">Ingredientes <small>um por linha</small><textarea id="rIngredients" required placeholder="2 tomates&#10;1 cebola&#10;..."></textarea></label>
+<label class="full">Modo de preparo <small>um passo por linha</small><textarea id="rSteps" required placeholder="Corte os ingredientes...&#10;Aqueça a panela..."></textarea></label>
+<button class="btn primary full" type="submit">🚀 Publicar receita</button>
+</form>
+</article></div>
+
+<!-- Profile -->
+<div id="profileModal" class="modal hidden"><div class="backdrop" data-close></div><article class="modal-card profile-modal">
+<button class="close" data-close>×</button><div class="profile-header"><div id="bigAvatar" class="avatar">U</div><div><span class="eyebrow">MEU PERFIL</span><h2 id="profileName"></h2><p id="profileEmail" class="muted"></p></div></div>
+<div class="profile-stats"><div><b id="pRecipes">0</b><small>publicadas</small></div><div><b id="pFavs">0</b><small>favoritos</small></div><div><b id="pReviews">0</b><small>avaliações</small></div></div>
+<h3>Minhas receitas</h3><div id="myRecipes" class="mini-list"></div>
+</article></div>
+
+<!-- Admin -->
+<div id="adminModal" class="modal hidden"><div class="backdrop" data-close></div><article class="modal-card">
+<button class="close" data-close>×</button><span class="eyebrow">ADMINISTRAÇÃO</span><h2>Painel do site</h2>
+<div class="admin-stats"><div><b id="aRecipes">0</b><small>receitas</small></div><div><b id="aUsers">0</b><small>usuários</small></div><div><b id="aReviews">0</b><small>avaliações</small></div></div>
+<div class="admin-list" id="adminList"></div>
+</article></div>
+<script src="script.js"></script>
+</body>
+</html>
